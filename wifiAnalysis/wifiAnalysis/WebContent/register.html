@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>店铺注册</title>
+	<meta charset="utf-8">
+	<!-- Include Required Prerequisites -->
+	<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"> 
+	<script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<form class="form-horizontal" id="registerForm" action="registerServlet" method="post">
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">店铺管理员注册</legend>
+      </div>
+ 
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">店铺探针ID</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="text" name="ID" id="ID">
+            <span style="color:red;" id="span_ID"></span>
+          </div>
+        </div>
+
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">mmac</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="text" name="mmac" id="mmac">
+            <span style="color:red;" id="span_mmac"></span>
+          </div>
+        </div>
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">店铺名</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="text" name="name" id="name">
+            <span style="color:red;" id="span_name"></span>
+          </div>
+    </div>
+    
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">账号/手机号</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="text" name="username" id="username">
+            <span style="color:red;" id="span_username"></span>
+          </div>
+    </div>
+    
+
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">密码</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="password" name="password" id="password">
+            <span style="color:red;" id="span_password"></span>
+          </div>
+        </div>
+
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">Address</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="text" name="address" id="address">
+            <span style="color:red;" id="span_address"></span>
+          </div>
+        </div>
+
+    <div class="form-group">
+
+          <!-- 文本输入 -->
+          <label class="control-label col-md-3" for="input01">Radius</label>
+          <div class="controls col-md-6">
+            <input placeholder="" class="form-control" type="text" name="radius" id="radius">
+            <span style="color:red;" id="span_radius"></span>
+          </div>
+        </div>
+
+    <div class="form-group">
+          <!-- 按钮 -->
+          <div class="controls col-md-offset-3 col-md-6">
+            <button class="btn btn-success" onclick="return register()">注册</button>
+            <button type="reset" class="btn btn-success" style="margin-left:30px;">重置</button>      
+          </div>
+    </div>
+
+    </fieldset>
+  </form>
+
+
+  <script type="text/javascript">
+      function register(){
+        var id = $("#ID").val();
+        var mmac= $("#mmac").val();
+        var name= $("#name").val();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var address= $("#address").val();
+        var radius = $("#radius").val();
+
+
+     	$("#span_ID").text("");
+        $("#span_mmac").text("");
+        $("#span_name").text("");
+        $("#span_username").text("");
+        $("#span_password").text("");
+        $("#span_address").text(""); 
+
+        if(id==""||id==null){
+            $("#span_ID").text("ID不能为空");
+            return false;
+        } if(mmac==""||mmac==null){ 
+            $("#span_mmac").text("mmac不能为空");
+            return false;
+        }
+         if(name==""||name==null){
+            $("#span_name").text("店铺名不能为空");
+            return false;
+        }
+         if(username==""||username==null){
+        	$("#span_username").text("手机号不能为空");
+            return false;
+        }
+         if(password==""||password==null){           
+            $("#span_password").text("密码不能为空");
+            return false;
+        }
+         if(address==""||address==null){           
+            $("#span_address").text("Address不能为空");
+            return false;
+        }
+         if(radius==""||radius==null){     
+            $("#span_radius").text("Radius不能为空");
+            return false;
+        }
+        $("#registerForm").submit();
+        
+      }
+
+  </script>
+</body>
+</html>
