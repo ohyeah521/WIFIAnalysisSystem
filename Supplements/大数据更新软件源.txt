@@ -1,0 +1,342 @@
+			更新软件源
+备份系统默认源
+sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+
+打开软件源文件
+sudo vim /etc/apt/sources.list
+
+将以下内容替换到源文件（注意在清华大学网站上选择合适自己系统的版本）
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiverse
+
+# 预发布软件源，不建议启用
+# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse
+
+
+更新软件源
+sudo apt-get update
+更新系统所有软件
+sudo apt-get dist-upgrade
+
+查看linux版本
+cat /etc/issue
+hadoop配置
+core-site.xml
+<configuration>
+        <property>
+                <name>io.native.lib.avaliable</name>
+                <value>true</value>
+        </property>
+        <property>
+                <name>fs.default.name</name>
+                <value>hdfs://master:9000</value>
+                <final>true</final>
+        </property>
+        <property>
+                <name>fs.defaultFS</name>
+                <value>hdfs://master:9000</value>
+                <description>NameNode URI</description>
+        </property>
+        <property>
+                <name>hadoop.tmp.dir</name>
+                <value>file:/home/hadoop/software/workspace/tmp</value>
+        </property>
+        <property>
+                <name>io.file.buffer.size</name>
+                <value>131072</value>
+        </property>
+</configuration>
+
+hdfs-site.xml
+<configuration>
+    <property> 
+        <name>dfs.replication</name> 
+        <value>3</value> 
+    </property> 
+    <property>
+	<name>dfs.permissions</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/home/hadoop/software/workspace/dfs/name</value>
+	<final>true</final>
+    </property>
+    <property>
+        <name>dfs.namenode.dir</name>
+        <value>/home/hadoop/software/workspace/dfs/name</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/home/hadoop/software/workspace/dfs/data</value>
+    </property>
+    <property>
+        <name>dfs.datanode.dir</name>
+        <value>/home/hadoop/software/workspace/dfs/data</value>
+    </property>
+    <property>
+        <name>dfs.webhdfs.enabled</name>
+        <value>true</value>
+    </property>
+</configuration>
+
+mapred-site.xml
+<configuration>
+    	<property>
+       		<name>mapreduce.framework.name</name>
+        	<value>yarn</value>
+    	</property>
+	<property>
+        	<name>mapreduce.job.tracker</name>
+        	<value>hdfs://master:9001</value>
+		<final>true</final>
+    	</property>
+	<property>
+        	<name>mapreduce.map.memory.mb</name>
+        	<value>1536</value>
+    	</property>
+	<property>
+        	<name>mapreduce.map.java.opts.</name>
+        	<value>.Xmx1024M</value>
+    	</property>
+	<property>
+        	<name>mapreduce.reduce.memory.mb</name>
+        	<value>3072</value>
+    	</property>
+	<property>
+        	<name>mapreduce.reduce.java.opts</name>
+        	<value>.Xmx2560M</value>
+    	</property>
+	<property>
+        	<name>mapreduce.task.io.sort.mb</name>
+        	<value>512</value>
+    	</property>
+	<property>
+        	<name>mapreduce.task.io.sort.factor</name>
+        	<value>100</value>
+    	</property>
+	<property>
+        	<name>mapreduce.reduce.shuffle.parallelcopies</name>
+        	<value>50</value>
+    	</property>
+	<property>
+        	<name>mapred.system.dir</name>
+        	<value>file:/home/hadoop/software/workspace/mapred/system</value>
+		<final>true</final>
+    	</property>
+	<property>
+        	<name>mapred.local.dir</name>
+        	<value>file:/home/hadoop/software/workspace/mapred/local</value>
+		<final>true</final>
+    	</property>
+
+</configuration>
+yarn-site.xml
+
+<configuration>
+    	<property>
+        	<description>The hostname of the RM.</description> 
+        	<name>yarn.resourcemanager.hostname</name> 
+        	<value>master</value> 
+  	</property> 
+	<property> 
+        	<name>yarn.resourcemanager.address</name> 
+        	<value>master:8081</value> 
+    	</property>
+	<property> 
+        	<name>yarn.resourcemanager.scheduler.address</name> 
+        	<value>master:8082</value> 
+    	</property>
+	<property> 
+        	<name>yarn.resourcemanager.resource-tracker.address</name> 
+        	<value>master:8083</value> 
+    	</property>
+	<property> 
+      	  	<name>yarn.nodemanager.aux-services</name> 
+       	 	<value>mapreduce_shuffle</value> 
+    	</property>
+	<property> 
+      	  	<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name> 
+       	 	<value>org.apache.hadoop.mapred.ShuffleHandler</value> 
+    	</property>
+
+</configuration>
+
+
+export HADOOP_FREFIX=/home/hadoop/software/hadoop-2.6.0
+export HADOOP_COMMON_HOME=${HADOOP_FREFIX}
+export HADOOP_HDFS_HOME=${HADOOP_FREFIX}
+export PATH=$PATH:$HADOOP_FREFIX/bin
+export PATH=$PATH:$HADOOP_FREFIX/sbin
+export HADOOP_MAPRED_HOME=${HADOOP_FREFIX}
+export YARN_HOME=${HADOOP_FREFIX}
+export HADOOP_CONF_HOME=${HADOOP_FREFIX}/etc/hadoop
+export YARN_CONF_DIR=${HADOOP_FREFIX}/etc/hadoop
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+VIM使用技巧
+1、    按屏幕移动
+（1） 最常用的几个命令如下：
+Ctrl + f                // 向前（往行号大的方向移动）移动一屏，想来F代表Forward
+Ctrl  + b               // 向后移动一屏，B的话应该是Before吧
+Ctrl + d               // 向前移动半屏，D指Down
+Ctrl +  u               // 向后移动半屏，U指Up
+Ctrl+e           //编辑窗口中的文件内容整体上移一行。
+Ctrl+y           //编辑窗口中的文件内容整体下移一行。
+注：上面是指按下Ctrl键的同时再按f等键。
+（2） 使用z重新定位屏幕命令
+z + 回车         // 把当前行移动到屏幕顶部
+扩展下上命令如： 
+100z + 回车      // 将移动第100行到屏幕的顶部，记得键入100z之后要再回车
+z.                              // 把当前行移动到屏幕中央，不用回车，切记
+z-                             // 把当前行移动到屏幕底部，同上，不用回车
+2、    按搜索移动
+事实上，对于一个源程序文件我们往往是要查找其中的一个变量或函数名，最有效的方法就是按文本搜索快速移动。
+/pattern            // 向前搜索模式，pattern代指要搜索的内容
+?pattern            // 向后搜索模式
+n                              // 重复上次搜索（向行号大的方向）
+N                             // 反方向重复上次搜索
+3、    按行号移动
+nG                         // 移动到第n行，注意此处G是大写。即输入n，在小写模式下输入shift+g，大写模式下直接按下g键
+              （如100G则能快速定位到源程序中第100行代码位置处，想必是很有用的。）
+Ctrl + g            // 显示当前行（并不是移动命令）
+G                           // 移动到文件的尾部，在小写模式下输入shift+g，大写模式下直接按下g键
+4、按光标移动
+左：h
+下：j
+上：k
+右：l
+下一行行首：+         //shift键切换到上档 '+'
+上一行行首：-
+当前行行首：0
+把光标移至当前行的起始位置，也即当前行的第一个非空白字符：^
+当前行行尾：$
+后一个单词词首：w,W    // w：将光标右移一个字。光标停留在下一个字的字首位置；W：将光标右移一个字。光标停留在下一个字的字首位置（即使两个字之间存在标点符号）。
+后一个单词词尾：e,E      // e：把光标移至当前所在字（或下一个字）的最后一个字符位置；E:  同e，只是以空格字符作为字的分隔符。
+前一个单词词首：b,B //b:将光标左移一个字。光标停留在下一个字的字首位置；B：将光标左移一个字。光标停留在下一个字的字首位置（即使两个字之间存在标点符号）。
+当前屏幕首行：H
+当前屏幕末行：L
+当前屏幕中央：M
+fx       //往右移动到 x 字符上                                                         
+Fx       //往左移动到 x 字符上                                                         
+tx       //往右移动到 x 字符前                                                         
+Tx      //往左移动到 x 字符后                                                         
+　        （注意：以上四个命令中，其中x是键入的字符）                                   
+;         //分号，配合 f 和 t 使用，重复一次                                        
+,         //逗号，配合 f 和 t 使用，反方向重复一次  
+标记文本替换
+mqq    //用字符串qq来标记当前光标的位置
+`qq      //移至qq所标记处  (数字1键左边键的上档)
+'qq      //移至qq标记所在行的开头处（单引号）
+''         //移至当前行上第一次所在位置的行的开头处（在光标移动之后，两个单引号）
+"          //移至当前行上一次所在位置（在光标移动之后）——1个双引号（测试不通过）
+
+
+/home/hadoop/app/mongodb/bin/mongod  --dbpath=/home/hadoop/app/mongodb/data  --logpath=/home/hadoop/app/mongodb/logs
+
+/home/hadoop/app/mongodb/bin/mongod  --dbpath=/home/hadoop/app/mongodb/data --port 27017 --logpath=/home/hadoop/app/mongodb/logs --logappend
+
+## start-mongod.sh
+MONGODIR= /home/hadoop/app/mongodb 
+MONGOD= $MONGODIR/bin/mongod 
+MONGO= $MONGODIR/bin/mongo 
+DBDIR= $MONGODIR/data 
+LOGPATH=$MONGODIR/logs
+# mongod will print its pid, so store it in out.tmp, then 
+# print it using awk to mongod.pid 
+$MONGOD --dbpath $DBDIR --fork --logpath $LOGPATH --logappend > out.tmp 
+awk 'NR == 2 { print $3 }' < out.tmp > mongod.pid
+sleep 3 
+$MONGO < onstart.js
+## in onstart.js
+use admin; 
+db.runCommand ( "logRotate" ); 
+
+
+
+dbpath = /home/data/db #数据文件存放目录
+
+logpath = /home/data/logs/mongodb.log 
+#日志文件存放目录
+port = 27017  
+#端口
+fork = true  #以守护程序的方式启用，即在后台运行
+
+nohttpinterface = true
+
+
+# 详细记录输出
+verbose = true
+
+# 指定服务端口号，默认端口27017
+port = 27017
+
+# 指定MongoDB日志文件，注意是指定文件不是目录
+logpath = /var/log/mongodb/logs/mongodb.log
+# 使用追加的方式写日志
+logappend = true
+
+# 指定数据库路径
+dbpath = /data/db/
+#设置每个数据库将被保存在一个单独的目录
+directoryperdb = true
+
+# 启用验证
+auth = false
+
+#以守护进程的方式运行MongoDB，创建服务器进程
+fork = true
+#安静输出
+quiet = true
+
+
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:     mongodb
+# Required-Start:
+# Required-Stop:
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description: mongodb
+# Description: mongo db server
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+PROGRAM=/home/hadoop/app/mongodb/bin/mongod
+MONGOPID=`ps -ef | grep 'mongod' | grep -v grep | awk '{print $2}'`
+
+test -x $PROGRAM || exit 0
+case "$1" in
+  start)
+     ulimit -n 3000
+     log_begin_msg "Starting MongoDB server"
+     $PROGRAM -f /etc/mongod.conf
+     log_end_msg 0
+     ;;
+  stop)
+     log_begin_msg "Stopping MongoDB server"
+     if [ ! -z "$MONGOPID" ]; then
+        kill -15 $MONGOPID
+     fi
+     log_end_msg 0
+     ;;
+  status)
+     ;;
+  *)
+     log_success_msg "Usage: /etc/init.d/mongodb {start|stop|status}"
+     exit 1
+esac
+exit 0
+
+
+

@@ -1,0 +1,82 @@
+下载与解压安装重命名为mongodb
+
+配置环境变量
+sudo gedit /etc/profile 
+
+sudo gedit /etc/mongod.conf 
+
+# 详细记录输出
+verbose = true
+
+# 指定服务端口号，默认端口27017
+port = 27017
+
+# 指定MongoDB日志文件，注意是指定文件不是目录
+logpath = /home/hadoop/app/mongodb/log/mongodb.log
+# 使用追加的方式写日志
+logappend = true
+
+# 指定数据库路径
+dbpath = /home/hadoop/app/mongodb/data/
+#设置每个数据库将被保存在一个单独的目录
+directoryperdb = true
+
+# 启用验证
+auth = false
+
+#以守护进程的方式运行MongoDB，创建服务器进程
+fork = true
+#安静输出
+quiet = true
+
+mkdir data
+mkdir log
+touch mongodb.log
+
+sudo gedit /etc/init.d/mongodb
+ 
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:     mongodb
+# Required-Start:
+# Required-Stop:
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description: mongodb
+# Description: mongo db server
+### END INIT INFO
+. /lib/lsb/init-functions
+PROGRAM=/home/hadoop/app/mongodb/bin/mongod
+MONGOPID=`ps -ef | grep 'mongod' | grep -v grep | awk '{print $2}'`
+test -x $PROGRAM || exit 0
+case "$1" in
+  start)
+     ulimit -n 3000
+     log_begin_msg "Starting MongoDB server"
+     $PROGRAM -f /etc/mongod.conf
+     log_end_msg 0
+     ;;
+  stop)
+     log_begin_msg "Stopping MongoDB server"
+     if [ ! -z "$MONGOPID" ]; then
+        kill -15 $MONGOPID
+     fi
+     log_end_msg 0
+     ;;
+  status)
+     ;;
+  *)
+     log_success_msg "Usage: /etc/init.d/mongodb {start|stop|status}"
+     exit 1
+esac
+exit 0
+
+sudo chmod +x /etc/init.d/mongodb 
+
+sudo update-rc.d mongodb defaults
+
+sudo service mongodb start --开启mongodb服务 mongo直接进入
+sudo service mongodb status --查看mongodb状态
+sudo service mongodb stop --关闭mongodb服务
+
+

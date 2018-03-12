@@ -1,0 +1,5 @@
+ubuntu16.04   去掉图形化桌面
+sudo systemctl disable lightdm.service
+恢复图形化的桌面
+
+sudo ln -s /lib/systemd/system/lightdm.service /etc/systemd/system/display-manager.service

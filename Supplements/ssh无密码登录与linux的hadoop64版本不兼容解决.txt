@@ -1,0 +1,26 @@
+ssh-keygen -t rsa
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+sudo service sshd restart
+
+ssh localhost 
+
+scp ~/.ssh/id_rsa.pub hadoop@slave01:~/
+
+scp ~/.ssh/id_rsa.pub hadoop@slave02:~/
+
+chmod 700 ~/.ssh
+
+cat ~/id_rsa.pub >> ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+ssh-add   ~/.ssh/id_rsa
+
+export HADOOP_OPTS="-Djava.library.path=/home/hadoop/app/hadoop-2.6.5/lib:/home/hadoop/app/hadoop-2.6.5/lib/native"
+
+http://www.aboutyun.com/thread-13073-1-1.html
+
